@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NullConditionalDemo
 {
@@ -12,18 +9,20 @@ namespace NullConditionalDemo
 
         public void HandleEventWithError()
         {
-            DataChanged(this, new EventArgs());
+            var onDataChanged = DataChanged;
+            onDataChanged(this, new EventArgs());
         }
 
-        public void HandleEventWithNullCheck()
+        public void RaiseEventWithNullCheck()
         {
-            if (DataChanged != null)
+            var onDataChanged = DataChanged;
+            if (onDataChanged != null)
             {
-                DataChanged(this, new EventArgs());
+                onDataChanged(this, new EventArgs());
             }
         }
 
-        public void HandleEvent()
+        public void RaiseEvent()
         {
             DataChanged?.Invoke(this, new EventArgs());
         }
@@ -32,6 +31,7 @@ namespace NullConditionalDemo
         {
             return item?.Name;
         }
+
         public int GetIdFromItem(NullDemoData item)
         {
             return item?.Id ?? 0;
@@ -41,12 +41,5 @@ namespace NullConditionalDemo
         {
             return list?[0]?.Name ?? "No Name";
         }
-    }
-
-    public class NullDemoData
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
     }
 }
